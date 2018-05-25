@@ -11,14 +11,13 @@ base <-read.csv(bdd_pts, sep="\t", header=TRUE, dec=",", as.is = TRUE)
 
 base <- base[,-seq(41,77)]
 
-#na.exclude(base)
-
 head(base)
 ###########################
 
 ############# S U R V I E #########################
-
-timeTP <- base$DDN.Date.bx #TP = Tous les Patients
+    #TP = Tous les Patients
+    
+timeTP <- base$DDN.Date.bx     
 timeTP
 # head(timeTP)
 # length(timeTP)
