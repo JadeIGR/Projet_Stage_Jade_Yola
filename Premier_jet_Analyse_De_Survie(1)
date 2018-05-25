@@ -15,9 +15,8 @@ head(base)
 ###########################
 
 ############# S U R V I E #########################
-    #TP = Tous les Patients
-    
-timeTP <- base$DDN.Date.bx     
+
+timeTP <- base$DDN.Date.bx #TP = Tous les Patients
 timeTP
 # head(timeTP)
 # length(timeTP)
@@ -31,6 +30,9 @@ SurvieTP
 KM_TP <- survfit(SurvieTP~1, conf.type="plain")
 KM_TP
 plotKM_TP <- plot(KM_TP, col="blue", lwd=2, conf.int=FALSE)
+
+#plot(survfit(Surv(timeTP, statusTP)~1), col = "pink", conf.int=FALSE)
+
 
 #######################################
 
@@ -52,13 +54,17 @@ SurvieIO
 
 KM_IO <- survfit(SurvieIO~1, conf.type="plain")
 KM_IO
-plotKM_IO <- plot(KM_IO, col="red", lwd=2)
+plotKM_IO <- plot(KM_IO, col="bisque3", lwd=2, main= "Courbe de Kaplan-Meier 
+                  pour les patients traités à l'Immunothérapie - IC95%",
+                  xlab = "temps (en mois)\n", ylab="S(t) - estimateur de la fonction de Survie")
+legend("topright",inset=0.02,legend=c("Patients traités à l'IO","Intervalle de Confiance"),
+       col="bisque3",lty=1:2, cex=0.8, text.font=4, bg='aliceblue')
 
 
 
 ##########PATIENTS NON TRAITES A L'IO###############
 
-
+?palette()
 
 baseNO_IO<- subset(base, substring(base$IO.oui.ou.non,1) == "0" )
 #baseNO_IO$IO.oui.ou.non
@@ -75,8 +81,11 @@ SurvieNO_IO
 
 KM_NO_IO <- survfit(SurvieNO_IO~1, conf.type="plain")
 KM_NO_IO
-plotKM_NO_IO <- plot(KM_NO_IO, col="green", lwd=2)
-
+plotKM_NO_IO <- plot(KM_NO_IO, col="aquamarine4", lwd=2, main= "Courbe de Kaplan-Meier 
+                  pour les patients non traités à l'Immunothérapie - IC95%",
+                     xlab = "temps (en mois)\n", ylab="S(t) - estimateur de la fonction de Survie")
+legend("topright",inset=0.02,legend=c("Patients non traités à l'IO","Intervalle de Confiance"),
+       col="aquamarine4",lty=1:2, cex=0.8, text.font=4, bg='aliceblue')
 
 
 ########COMPARAISON TRAITES OU NON TRAITES A L'IMMUNO######
@@ -94,4 +103,5 @@ plotKM_IO <- plot(KM_IO, col="pink", lwd=2, conf.int=FALSE,
 par(new=TRUE)
 
 plotKM_NO_IO <- plot(KM_NO_IO, col="aquamarine3", lwd=2, conf.int=FALSE)
+
 
