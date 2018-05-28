@@ -115,3 +115,74 @@ par(new=TRUE)
 
 plotKM_NO_IO <- plot(KM_NO_IO, col="aquamarine3", lwd=2, conf.int=FALSE,xlim=xlim1, ylim=ylim1)
 
+########## PATIENTS AVEC VP ayant suivi IO#############
+
+baseVP_IO<- subset(baseIO, substring(baseIO$PV.yes.or.no,1) == "1" )
+baseVP_IO$PV.yes.or.no
+
+timeVP_IO <-baseVP_IO$DDN.Date.bx
+
+statusVP_IO <- baseVP_IO$Décès.ou.non.à.la.DDN
+
+
+SurvieVP_IO <-Surv(timeVP_IO,statusVP_IO)
+SurvieVP_IO
+
+KM_VP_IO <- survfit(SurvieVP_IO~1, conf.type="plain")
+KM_VP_IO
+plotKM_VP_IO <- plot(KM_VP_IO, col="bisque3", lwd=2, main= "Courbe de Kaplan-Meier 
+                  pour les patients présentants des variants pathogène pour les gènes 
+                  de la DDR traités à l'IO - IC95%",
+                  xlab = "temps (en mois)\n", ylab="S(t) - estimateur de la fonction de Survie")
+legend("topright",inset=0.02,legend=c("Patients avec VP + traités à l'IO","Intervalle de Confiance"),
+       col="bisque3",lty=1:2, cex=0.75, text.font=4, bg='aliceblue')
+
+
+
+########## PATIENTS SANS VP ayant suivi IO #############
+
+base_NoVP_IO<- subset(baseIO, substring(baseIO$PV.yes.or.no,1) == "0" )
+base_NoVP_IO$PV.yes.or.no
+
+timeNoVP_IO <-base_NoVP_IO$DDN.Date.bx
+
+statusNoVP_IO <- base_NoVP_IO$Décès.ou.non.à.la.DDN
+
+
+SurvieNoVP_IO <-Surv(timeNoVP_IO,statusNoVP_IO)
+SurvieVP_IO
+
+KM_NoVP_IO <- survfit(SurvieNoVP_IO~1, conf.type="plain")
+KM_NoVP_IO
+plotKM_NoVP_IO <- plot(KM_NoVP_IO, col="pink", lwd=2, main= "Courbe de Kaplan-Meier 
+                  pour les patients ne présentants pas de variants pathogène pour les gènes 
+                  de la DDR traités à l'IO - IC95%",
+                     xlab = "temps (en mois)\n", ylab="S(t) - estimateur de la fonction de Survie")
+legend("topright",inset=0.02,legend=c("Patients sans VP + traités à l'IO","Intervalle de Confiance"),
+       col="pink",lty=1:2, cex=0.75, text.font=4, bg='aliceblue')
+
+########## COMPARAISON PATIENTS AVEC/SANS VP AYANT SUIVI IMMUNO #############
+
+timeVP_IO <- na.exclude(timeVP_IO)
+timeNoVP_IO<-na.exclude(timeNoVP_IO)
+
+#Avoir la même échelle au niveau de l'axe temps pour les deux
+xlim1 <- range(c(timeVP_IO,timeNoVP_IO))
+xlim1
+ylim1 <- c(0,1)
+
+#dev.new(width=10, height=10)
+
+plotKM_VP_IO <- plot(KM_VP_IO, col="bisque3", lwd=2, conf.int=FALSE, xlim=xlim1, ylim=ylim1,
+                  main= "Comparaison des courbes de Kaplan-Meier\n pour patients présentant des \n Variants Pathogènes + traités à l'IO",
+                  xlab = "temps (en mois)\n", ylab="S(t) - estimateur de la fonction de Survie") 
+
+legend("topright",inset=0.02,legend=c("Patients avec VP traités à l'IO","Patients sans VP traités à l'IO"),
+       col=c("bisque3","aquamarine3"),lty=1:2, cex=0.8,
+       text.font=4, bg='aliceblue')
+
+par(new=TRUE)
+
+plotKM_NoVP_IO <- plot(KM_NoVP_IO, col="aquamarine3", lwd=2, conf.int=FALSE,xlim=xlim1, ylim=ylim1)
+
+
