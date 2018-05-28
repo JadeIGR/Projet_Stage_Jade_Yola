@@ -11,6 +11,8 @@ base <-read.csv(bdd_pts, sep="\t", header=TRUE, dec=",", as.is = TRUE)
 
 base <- base[,-seq(41,77)]
 
+#na.exclude(base)
+
 head(base)
 ###########################
 
@@ -90,18 +92,26 @@ legend("topright",inset=0.02,legend=c("Patients non traités à l'IO","Intervall
 
 ########COMPARAISON TRAITES OU NON TRAITES A L'IMMUNO######
 
+time_IO <- na.exclude(timeIO)
+timeNO_IO<-na.exclude(timeNO_IO)
 
-plotKM_IO <- plot(KM_IO, col="pink", lwd=2, conf.int=FALSE, 
+#Avoir la même échelle au niveau de l'axe temps pour les deux
+xlim1 <- range(c(timeIO,timeNO_IO))
+xlim1
+ylim1 <- c(0,1)
+
+#dev.new(width=10, height=10)
+
+plotKM_IO <- plot(KM_IO, col="pink", lwd=2, conf.int=FALSE, xlim=xlim1, ylim=ylim1,
                   main= "Comparaison des courbes de Kaplan-Meier 
                   pour patients traités ou non à l'Immunothérapie",
                   xlab = "temps (en mois)\n", ylab="S(t) - estimateur de la fonction de Survie") 
                   
-                  legend("topright",inset=0.02,legend=c("Patients traités à l'IO","Patients non traités à l'IO"),
-                         col=c("pink","aquamarine3"),lty=1:2, cex=0.8,
-                         text.font=4, bg='aliceblue')
+legend("topright",inset=0.02,legend=c("Patients traités à l'IO","Patients non traités à l'IO"),
+        col=c("pink","aquamarine3"),lty=1:2, cex=0.8,
+        text.font=4, bg='aliceblue')
 
 par(new=TRUE)
 
-plotKM_NO_IO <- plot(KM_NO_IO, col="aquamarine3", lwd=2, conf.int=FALSE)
-
+plotKM_NO_IO <- plot(KM_NO_IO, col="aquamarine3", lwd=2, conf.int=FALSE,xlim=xlim1, ylim=ylim1)
 
